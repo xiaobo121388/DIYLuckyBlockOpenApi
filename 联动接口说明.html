@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义幸运方块联动接口指南</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(90deg, #4361ee 0%, #3a0ca3 100%);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            border-bottom: 5px solid #4cc9f0;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: white;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin: 0 auto 25px;
+            font-weight: 300;
+        }
+        .contact-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px auto;
+            max-width: 550px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+        .contact-box h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .contact-box p {
+            color: white;
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+        .contact-box strong {
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        
+        /* 重新设计副包支持说明 */
+        .support-info {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+        .support-info::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+        .support-info::after {
+            content: "";
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+        .support-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #d32f2f;
+            position: relative;
+            z-index: 2;
+        }
+        .support-info p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #5a3e36;
+            position: relative;
+            z-index: 2;
+        }
+        .support-info ul {
+            padding-left: 25px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+        .support-info li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #5a3e36;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .support-info li::before {
+            content: "✓";
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.4);
+            border-left: 4px solid #d32f2f;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section {
+            padding: 30px;
+            border-bottom: 1px solid #eaeef5;
+        }
+        .section:last-child {
+            border-bottom: none;
+        }
+        .section h2 {
+            color: #3a0ca3;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4cc9f0;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .section h3 {
+            color: #4361ee;
+            margin: 30px 0 20px;
+            font-size: 1.5rem;
+        }
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+        }
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 25px;
+            flex: 1;
+            min-width: 250px;
+            border: 2px solid #e6f0ff;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .step-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4361ee 0%, #3a0ca3 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.2);
+        }
+        .step-card:hover::after {
+            transform: scaleX(1);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        .step-card h3 {
+            color: #3a0ca3;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        .step-card p {
+            color: #555;
+            line-height: 1.7;
+        }
+        .api-card {
+            background: #f8fbff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px solid #e6f0ff;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .api-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #4361ee 0%, #3a0ca3 100%);
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+        .param-table th, .param-table td {
+            padding: 15px 20px;
+            text-align: left;
+        }
+        .param-table thead {
+            background: linear-gradient(90deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+        }
+        .param-table th {
+            font-weight: 500;
+        }
+        .param-table tbody tr:nth-child(even) {
+            background-color: #f0f7ff;
+        }
+        .param-table tbody tr:hover {
+            background-color: #e6f0ff;
+        }
+        code {
+            background: #e6f0ff;
+            color: #3a0ca3;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+        pre {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 2px solid #e6f0ff;
+            line-height: 1.5;
+            font-size: 1.05rem;
+            color: #2a3b8f;
+            position: relative;
+        }
+        pre::after {
+            content: "代码示例";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #4361ee;
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            border-radius: 0 0 0 8px;
+        }
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .feature-list li {
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            position: relative;
+            border: 2px solid #e6f0ff;
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+        .feature-list li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.15);
+            border-color: #4cc9f0;
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+        }
+        .feature-content h4 {
+            color: #3a0ca3;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        .feature-content p {
+            color: #555;
+            line-height: 1.7;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 1rem;
+            background: #f8fbff;
+            border-top: 2px solid #e6f0ff;
+        }
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .footer-content p {
+            margin: 8px 0;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #4cc9f0 0%, #4361ee 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        .status-info {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+        .status-icon {
+            background: #4361ee;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .status-content h4 {
+            color: #3a0ca3;
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+        @media (max-width: 768px) {
+            .steps {
+                flex-direction: column;
+            }
+            .step-card {
+                min-width: 100%;
+            }
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+            .header-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-cube"></i> 终极版 · 自定义幸运方块联动接口指南</h1>
+            <p class="header-subtitle">副包开发与地图联动</p>
+            
+            <div class="contact-box">
+                <h3><i class="fas fa-headset"></i> 技术支持与联系</h3>
+                <p>作者：<strong>小波</strong></p>
+                <p>QQ：<strong>213892465</strong></p>
+                <p>提供技术支持与问题解答</p>
+            </div>
+        </header>
+        
+        <div class="section">
+            <!-- 重新设计的副包支持说明 -->
+            <div class="support-info">
+                <h3><i class="fas fa-hands-helping"></i> 副包支持说明</h3>
+                <p>小波为副包作者提供全方位的支持服务，让您的创作更加顺畅无忧。</p>
+                
+                <div class="highlight-box">
+                    <p><strong>副包发布：</strong> 开发者可以不经过小波授权，直接发布副包</p>
+                    <p><strong>代投服务：</strong> 根据副包质量评估后，小波将提供代投服务</p>
+                    <p><strong>收益分配：</strong> 小波不收取任何费用，产生的收益100%归副包作者所有</p>
+                    <p><strong>包体宣传：</strong> 根据副包性价比评估后，小波可将副包加入主包宣传页中</p>
+                </div>
+            </div>
+            
+            <!-- 当前开发状态 -->
+            <div class="status-info">
+                <div class="status-icon">
+                    <i class="fas fa-code-branch"></i>
+                </div>
+                <div class="status-content">
+                    <h4>当前开发状态</h4>
+                    <p>目前暂时只开发了<span class="highlight">地图联动接口</span>，更多功能正在开发中</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-list-ol"></i> 使用步骤</h2>
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>制作地图</h3>
+                    <p>使用联动包提供的幸运方块或主包的幸运方块制作地图</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>配置预设</h3>
+                    <p>提前配置好幸运方块预设并且导出</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>导入配置</h3>
+                    <p>将预设复制到Demo的<code>modConfig.py</code>中</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-code"></i> API 接口说明</h2>
+            
+            <div class="api-card">
+                <h3><i class="fas fa-plug"></i> 获取联动系统实例</h3>
+                <pre>serverApi.GetSystem("DIYLuckyBlock", "OpenApiServerSystem")</pre>
+            </div>
+            
+            <div class="api-card">
+                <h3><i class="fas fa-cogs"></i> 接口1：PackageType</h3>
+                <p><strong>功能：</strong>注册副包类型</p>
+                
+                <h4>参数说明</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                            <th>可选值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>str</td>
+                            <td>副包类型</td>
+                            <td>"World" 或 "Mod"</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>str</td>
+                            <td>副包Mod名</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>str</td>
+                            <td>副包服务端系统名</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>使用示例</h4>
+                <pre>self.DLBserverSystem.PackageType(
+    modConfig.PACKAGE_TYPE,
+    modConfig.MOD_NAME,
+    modConfig.SERVER_SYSTEM
+)</pre>
+            </div>
+            
+            <div class="api-card">
+                <h3><i class="fas fa-sliders-h"></i> 接口2：ChangeLuckyBlockData</h3>
+                <p><strong>功能：</strong>设置幸运方块预设</p>
+                
+                <h4>参数说明</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>dict</td>
+                            <td>全部覆盖</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>dict</td>
+                            <td>覆盖绿色幸运方块</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>dict</td>
+                            <td>覆盖黄色幸运方块</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>dict</td>
+                            <td>覆盖蓝色幸运方块</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>dict</td>
+                            <td>覆盖彩色幸运方块</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>dict</td>
+                            <td>覆盖红色幸运方块</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>dict</td>
+                            <td>覆盖白色幸运方块</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>使用示例</h4>
+                <pre>self.DLBserverSystem.ChangeLuckyBlockData(
+    modConfig.WHOLE_PRESET,
+    modConfig.LUCKY_BLOCK_1_PRESET,
+    modConfig.LUCKY_BLOCK_2_PRESET,
+    modConfig.LUCKY_BLOCK_3_PRESET,
+    modConfig.LUCKY_BLOCK_4_PRESET,
+    modConfig.LUCKY_BLOCK_5_PRESET,
+    modConfig.LUCKY_BLOCK_6_PRESET
+)</pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2><i class="fas fa-star"></i> Demo 主要功能</h2>
+            <ul class="feature-list">
+                <li>
+                    <div class="feature-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>便捷修改预设</h4>
+                        <p>提供便捷化修改地图类型副包预设的功能，简化开发流程</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>自动提示</h4>
+                        <p>当未加入主包时，自动弹出提示信息，避免配置错误</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="feature-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>兼容幸运方块</h4>
+                        <p>提供与主包相同ID的幸运方块，确保无缝兼容</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <footer>
+            <div class="footer-content">
+                <p><strong>自定义幸运方块联动接口指南</strong> | 技术支持：小波 (QQ: 213892465)</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // 添加简单的动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.step-card, .api-card, .feature-list li, .support-info');
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            setTimeout(() => {
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 200 * index);
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>

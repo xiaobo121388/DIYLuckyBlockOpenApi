@@ -1,0 +1,34 @@
+{
+    "Addon": {
+        "EnchantSetting": {
+            "amplifier": 1
+        },
+        "PackResourceSortData": {
+
+        },
+        "PlayerEffectSetting": {
+            "amplifier": 1,
+            "duration": 10
+        },
+        "PresetInstanceTreeData": [
+
+        ]
+    },
+    "UI": {
+        "customPrefabGroupExpand": [
+
+        ],
+        "expandData": {
+            "prefab": {
+
+            },
+            "screen": {
+                "D:\\MCStudioDownload\\work\\467359395@qq.com\\Cpp\\AddOn\\c69eaec198f94bdd8bce3dcf5f22e685\\resource_pack_dDQYWRw8\\ui\\diy_lucky_block_open_api_tip.json": [
+                    "/main",
+                    "/main/image",
+                    "/main/image/image"
+                ]
+            }
+        }
+    }
+}

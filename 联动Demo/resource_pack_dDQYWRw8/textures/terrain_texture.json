@@ -1,0 +1,56 @@
+{
+    "num_mip_levels": 4,
+    "padding": 8,
+    "resource_pack_name": "xiaobo",
+    "texture_data": {
+        "diyluckyblock:luck1": {
+            "textures": "textures/blocks/luck1"
+        },
+        "diyluckyblock:luck2": {
+            "textures": "textures/blocks/luck2"
+        },
+        "diyluckyblock:luck3": {
+            "textures": "textures/blocks/luck3"
+        },
+        "diyluckyblock:luck4": {
+            "textures": "textures/blocks/luck4"
+        },
+        "diyluckyblock:luck5": {
+            "textures": "textures/blocks/luck5"
+        },
+        "diyluckyblock:luck6": {
+            "textures": "textures/blocks/luck6"
+        },
+        "luck1": {
+            "textures": [
+                "textures/blocks/luck1"
+            ]
+        },
+        "luck2": {
+            "textures": [
+                "textures/blocks/luck2"
+            ]
+        },
+        "luck3": {
+            "textures": [
+                "textures/blocks/luck3"
+            ]
+        },
+        "luck4": {
+            "textures": [
+                "textures/blocks/luck4"
+            ]
+        },
+        "luck5": {
+            "textures": [
+                "textures/blocks/luck5"
+            ]
+        },
+        "luck6": {
+            "textures": [
+                "textures/blocks/luck6"
+            ]
+        }
+    },
+    "texture_name": "atlas.terrain"
+}

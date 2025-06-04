@@ -1,0 +1,7 @@
+[
+  {
+    "flipbook_texture": "textures/blocks/luck4",
+    "atlas_tile": "luck4",
+    "ticks_per_frame": 4
+  }
+]

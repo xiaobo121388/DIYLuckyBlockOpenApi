@@ -1,0 +1,13 @@
+{
+    "Arena.Component.Namespace": "diyluckyblockopenapi",
+    "FirstTabSetting": 0,
+    "ShortItemSettings": [
+        "resource_pack_dDQYWRw8\\ui",
+        "resource_pack_dDQYWRw8\\models",
+        "resource_pack_dDQYWRw8\\textures"
+    ],
+    "Uluru.autoLayerDict": {
+
+    },
+    "Uluru.checkSuspectOldUI": true
+}

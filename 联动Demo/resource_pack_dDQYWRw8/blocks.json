@@ -1,0 +1,31 @@
+{
+    "diyluckyblock:xiaobo_luck1": {
+        "sound": "stone",
+        "textures": "diyluckyblock:luck1"
+    },
+    "diyluckyblock:xiaobo_luck2": {
+        "sound": "stone",
+        "textures": "diyluckyblock:luck2"
+    },
+    "diyluckyblock:xiaobo_luck3": {
+        "sound": "stone",
+        "textures": "diyluckyblock:luck3"
+    },
+    "diyluckyblock:xiaobo_luck4": {
+        "sound": "stone",
+        "textures": "diyluckyblock:luck4"
+    },
+    "diyluckyblock:xiaobo_luck5": {
+        "sound": "stone",
+        "textures": "diyluckyblock:luck5"
+    },
+    "diyluckyblock:xiaobo_luck6": {
+        "sound": "stone",
+        "textures": "diyluckyblock:luck6"
+    },
+    "format_version": [
+        1,
+        1,
+        0
+    ]
+}
